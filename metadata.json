@@ -1,0 +1,5 @@
+{
+  "name": "The 5-Minute eBook Generator",
+  "description": "From a single idea, generate title suggestions and a complete eBook outline in under 5 minutes. Powered by Gemini.",
+  "requestFramePermissions": []
+}
