@@ -42,7 +42,35 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ColorBookGenerator-Android-debug
+          name: ColorBookGenerator-Android-test2
           path: android-colorbook/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
+  emulator-smoke-test:
+    needs: build-debug-apk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download test APK
+        uses: actions/download-artifact@v4
+        with:
+          name: ColorBookGenerator-Android-test2
+          path: apk
+      - name: Start on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          script: |
+            adb install apk/app-debug.apk
+            adb logcat -c
+            adb shell am start -W -n com.kevinmulkins.colorbookgenerator.test2/com.kevinmulkins.colorbookgenerator.MainActivity
+            sleep 5
+            adb logcat -d -b crash > crashes.txt
+            if grep -E "FATAL EXCEPTION|com.kevinmulkins.colorbookgenerator.test2" crashes.txt; then
+              cat crashes.txt
+              exit 1
+            fi
+            adb shell dumpsys activity activities | grep com.kevinmulkins.colorbookgenerator.test2

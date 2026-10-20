@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ColorBookLaunch" parent="android:style/Theme.Translucent.NoTitleBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
+    <style name="Theme.ColorBookLaunch" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:navigationBarColor">@color/nav</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
